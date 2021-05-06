@@ -10,22 +10,20 @@ class ListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Column(children: [
-        SizedBox(height: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: [
           Row(children: [
-            Row(children: [
-              SizedBox(width: 10,),
-              Text(title, style: TextStyle(fontSize: 20),),
-            ],),
-            Row(children: [
-              Text(value, style: TextStyle(fontSize: 20),),
-              Icon(Icons.arrow_forward_ios, color: Colors.grey) // dummy
-            ],)
-          ],
+            icon == null ? Text("") : Icon(icon.icon),
+            icon == null ? Text("") : SizedBox(width: 5.0,),
+            Text(title, style: TextStyle(fontSize: 20),),
+          ],),
+          Row(children: [
+            Text(value, style: TextStyle(fontSize: 20),),
+            Icon(Icons.arrow_forward_ios, color: Colors.grey) // dummy
+          ],),],
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
-        SizedBox(height: 10),
-      ],
       )
     );
   }

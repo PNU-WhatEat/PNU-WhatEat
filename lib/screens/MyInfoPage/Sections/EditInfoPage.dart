@@ -37,25 +37,25 @@ class EditInfoPage extends StatelessWidget {
           ),
         ),
         Divider(thickness: 10,),
-        ListElement(title: "이름", value: "홍길동", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments(
+        ListElement(title: "이름", value: "홍길동" , onTap: () { _navigateAndDisplaySelection(context, EditPageArguments(// dummy
           '이름 변경',
           '이름'
-        )); }), // dummy
+        )); }), 
         Divider(thickness: 1,),
-        ListElement(title: "이메일", value: "whquddn55@gmail.com", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments(
+        ListElement(title: "이메일", value: "whquddn55@gmail.com", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments( // dummy
           '이메일 변경',
           '이메일'
-        )); }), // dummy
+        )); }),
         Divider(thickness: 1,),
-        ListElement(title: "전화번호", value: "01077087809", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments(
+        ListElement(title: "전화번호", value: "01077087809", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments( // dummy 
           '전화번호 변경',
           '전화번호'
-        )); }), // dummy
+        )); }),
         Divider(thickness: 1,),
-        ListElement(title: "비밀번호", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments(
+        ListElement(title: "비밀번호", onTap: () { _navigateAndDisplaySelection(context, EditPageArguments( // dummy
           '비밀번호 변경',
           '비밀번호'
-        )); }), // dummy
+        )); }),
         Divider(thickness: 1,)
       ],
       ),
