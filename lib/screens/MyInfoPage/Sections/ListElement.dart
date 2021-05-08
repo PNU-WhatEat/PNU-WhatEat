@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ListElement extends StatelessWidget {
-  Icon icon;
-  String title;
-  String value;
-  VoidCallback onTap;
+  final Icon icon;
+  final String title;
+  final String value;
+  final VoidCallback onTap;
   ListElement({this.icon, this.title = "", this.value = "", this.onTap});
   @override
   Widget build(BuildContext context) {

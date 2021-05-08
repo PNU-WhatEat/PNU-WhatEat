@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/TimeLine.dart';
 
-class TimeLinePage extends StatelessWidget {
+class TimeLinePage extends StatefulWidget {
   static const id = "timeLine_page";
+  int category;
+
+  TimeLinePage({this.category});
+
+  @override
+  _TimeLinePageState createState() => _TimeLinePageState();
+}
+
+class _TimeLinePageState extends State<TimeLinePage> {
+  
   @override
   Widget build(BuildContext context) {
     final TimeLinePageArguments args =
@@ -21,17 +31,15 @@ class TimeLinePage extends StatelessWidget {
         children: [
           Row(
             children: [
-              OutlinedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.filter_alt),
-                label: Text("필터"),
-                style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0))),
-              ),
+              Expanded(child: TextButton(child: Text('리뷰'), onPressed: () { setState(() {
+                widget.category = 0;
+              }); },)),
+              Expanded(child: TextButton(child: Text('방문'), onPressed: () { },))
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
-          )
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          Divider(thickness: 1,),
+          //widget.category == 0 ? ReviewList() : VisitedList();
         ],
       ),
     );

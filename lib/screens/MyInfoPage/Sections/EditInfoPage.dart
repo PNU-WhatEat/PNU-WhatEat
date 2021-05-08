@@ -1,18 +1,40 @@
 import 'package:flutter/material.dart';
 import 'ListElement.dart';
 import 'EditPage.dart';
+import 'MyMainInfo.dart';
 
-class EditPageArguments {
+class EditPageArgs {
   final String title;
   final String message;
 
-  EditPageArguments({this.title, this.message});
+  EditPageArgs({this.title, this.message});
 }
 
-class EditInfoPage extends StatelessWidget {
+class EditInfoPage extends StatefulWidget {
   static const id = "editInfo_Page";
+
+  @override
+  _EditInfoPageState createState() => _EditInfoPageState();
+}
+
+class WidgetState {
+  String name;
+  String email;
+  String phoneNumber;
+
+  WidgetState({this.name, this.email, this.phoneNumber});
+}
+
+class _EditInfoPageState extends State<EditInfoPage> {
+  WidgetState state = WidgetState();
   @override
   Widget build(BuildContext context) {
+    final EditInfoPageArgs args = ModalRoute.of(context).settings.arguments;
+    setState(() {
+      state.name = args.name;
+      state.email = args.email;
+      state.phoneNumber = args.phoneNumber;
+    });
     return Scaffold(
         appBar: AppBar(
           title: Text('내 정보 수정'),
@@ -34,39 +56,45 @@ class EditInfoPage extends StatelessWidget {
               ),
               ListElement(
                   title: "이름",
-                  value: "홍길동", // dummy
+                  value: state.name,
                   onTap: () {
                     _navigateAndDisplaySelection(
-                        ctx,
-                        EditPageArguments(
-                            title : '이름 변경',
-                            message : '이름'));
+                      ctx,
+                      EditPageArgs(
+                          title : '이름 변경',
+                          message : '이름'
+                      )
+                    );
                   }),
               Divider(
                 thickness: 1,
               ),
               ListElement(
                   title: "이메일",
-                  value: "whquddn55@gmail.com", // dummy
+                  value: state.email,
                   onTap: () {
                     _navigateAndDisplaySelection(
-                        ctx,
-                        EditPageArguments(
-                            title : '이메일 변경',
-                            message : '이메일'));
+                      ctx,
+                      EditPageArgs(
+                          title : '이메일 변경',
+                          message : '이메일'
+                      )
+                    );
                   }),
               Divider(
                 thickness: 1,
               ),
               ListElement(
                   title: "전화번호",
-                  value: "01077087809", // dummy
+                  value: state.phoneNumber,
                   onTap: () {
                     _navigateAndDisplaySelection(
-                        ctx,
-                        EditPageArguments(
-                            title : '전화번호 변경',
-                            message : '전화번호'));
+                      ctx,
+                      EditPageArgs(
+                          title : '전화번호 변경',
+                          message : '전화번호'
+                      )
+                    );
                   }),
               Divider(
                 thickness: 1,
@@ -75,10 +103,12 @@ class EditInfoPage extends StatelessWidget {
                   title: "비밀번호",
                   onTap: () {
                     _navigateAndDisplaySelection(
-                        ctx,
-                        EditPageArguments(
-                            title : '비밀번호 변경',
-                            message : '비밀번호'));
+                      ctx,
+                      EditPageArgs(
+                          title : '비밀번호 변경',
+                          message : '비밀번호'
+                      )
+                    );
                   }),
               Divider(
                 thickness: 1,
@@ -88,13 +118,18 @@ class EditInfoPage extends StatelessWidget {
         }));
   }
 
-  _navigateAndDisplaySelection(BuildContext context, EditPageArguments arguments) async {
+  _navigateAndDisplaySelection(BuildContext context, EditPageArgs arguments) async {
     final result = await Navigator.pushNamed(context, EditPage.id, arguments: arguments);
-    //
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(
-          content: Text(result.toString())
+    
+    if (result.toString() == 'true') {
+      Navigator.pop(context);
+    }
+    else {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+            content: Text('Exception: Error')
         ));
+    }
   }
 }
