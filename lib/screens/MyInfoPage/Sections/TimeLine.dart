@@ -3,8 +3,8 @@ import './ListElement.dart';
 import '../../TimeLinePage/TimeLinePage.dart';
 
 class TimeLinePageArguments {
-  final int categoryOption;
-  TimeLinePageArguments({this.categoryOption});
+  final int category;
+  TimeLinePageArguments({this.category});
 }
 
 class TimeLine extends StatelessWidget {
@@ -16,10 +16,17 @@ class TimeLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      ListElement(icon: Icon(Icons.timer), title: "타임라인", value: (review+visited).toString(), onTap: () { Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(categoryOption : 0)); }), // dummy
+      ListElement(
+        icon: Icon(Icons.timer),
+        title: "타임라인", 
+        value: (review+visited).toString(), 
+        onTap: () { 
+          Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(category : 1 & 2)); 
+        }
+      ), // dummy
       Row(children: [
         InkWell(
-          onTap: () {  Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(categoryOption : 1)); },
+          onTap: () {  Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(category : 1)); },
           child: Center(
             child: Column(children: [
               Text('리뷰'),
@@ -31,7 +38,7 @@ class TimeLine extends StatelessWidget {
         ),
         Container(height: 80, child: VerticalDivider()),
         InkWell(
-          onTap: () {  Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(categoryOption : 2)); }, // Todo
+          onTap: () {  Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(category : 2)); }, // Todo
           child: Center(
             child: Column(children: [
               Text('방문'),

@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditInfoPage.dart';
 
+class ReturnValue {
+  bool success;
+  String message;
+  String value;
+
+  ReturnValue({this.success, this.message, this.value});
+}
+
 class EditPage extends StatefulWidget {
   static const id = "edit_Page";
 
@@ -42,7 +50,11 @@ class _EditPageState extends State<EditPage> {
                         setState(() => {isButtonEnable = () {
                           // Todo: 서버에 정보수정 요청
                           myInfoPageState.reloadInfo();
-                          Navigator.pop(context, true); // 정보수정이 됐으면 true 반환 else 재수정 요청
+                          Navigator.pop(context, ReturnValue(
+                            success: true,
+                            message: args.message,
+                            value: controller.text
+                          )); // 정보수정이 됐으면 true 반환 else 재수정 요청
                         }});
                     },
                   ),

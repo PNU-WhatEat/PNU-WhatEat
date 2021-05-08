@@ -24,17 +24,25 @@ class WidgetState {
 
   WidgetState({this.name, this.email, this.phoneNumber});
 }
-
 class _EditInfoPageState extends State<EditInfoPage> {
   WidgetState state = WidgetState();
+
+  @override
+  void initState() {
+    super.initState();
+
+    final widgetsBinding = WidgetsBinding.instance;
+    widgetsBinding.addPostFrameCallback((callback) {
+      setState(() {
+        state.name = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).name;
+        state.email = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).email;
+        state.phoneNumber = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).phoneNumber;
+      });
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    final EditInfoPageArgs args = ModalRoute.of(context).settings.arguments;
-    setState(() {
-      state.name = args.name;
-      state.email = args.email;
-      state.phoneNumber = args.phoneNumber;
-    });
     return Scaffold(
         appBar: AppBar(
           title: Text('내 정보 수정'),
@@ -121,8 +129,26 @@ class _EditInfoPageState extends State<EditInfoPage> {
   _navigateAndDisplaySelection(BuildContext context, EditPageArgs arguments) async {
     final result = await Navigator.pushNamed(context, EditPage.id, arguments: arguments);
     
-    if (result.toString() == 'true') {
-      Navigator.pop(context);
+    if ((result as ReturnValue).success) {
+      if ((result as ReturnValue).message == '이름')
+        setState(() {
+          state.name = (result as ReturnValue).value;
+        });
+      else if ((result as ReturnValue).message == '이메일')
+        setState(() {
+          state.name = (result as ReturnValue).value;
+        });
+      else if ((result as ReturnValue).message == '비밀번호')
+        setState(() {
+          state.name = (result as ReturnValue).value;
+        });
+      else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(
+              content: Text('Exception: Error on return message')
+          ));
+      }
     }
     else {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
