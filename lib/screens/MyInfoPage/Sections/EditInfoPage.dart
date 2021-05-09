@@ -128,6 +128,9 @@ class _EditInfoPageState extends State<EditInfoPage> {
 
   _navigateAndDisplaySelection(BuildContext context, EditPageArgs arguments) async {
     final result = await Navigator.pushNamed(context, EditPage.id, arguments: arguments);
+
+    if (result == null)
+      return;
     
     if ((result as ReturnValue).success) {
       if ((result as ReturnValue).message == '이름')
@@ -136,11 +139,11 @@ class _EditInfoPageState extends State<EditInfoPage> {
         });
       else if ((result as ReturnValue).message == '이메일')
         setState(() {
-          state.name = (result as ReturnValue).value;
+          state.email = (result as ReturnValue).value;
         });
-      else if ((result as ReturnValue).message == '비밀번호')
+      else if ((result as ReturnValue).message == '전화번호')
         setState(() {
-          state.name = (result as ReturnValue).value;
+          state.phoneNumber = (result as ReturnValue).value;
         });
       else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();

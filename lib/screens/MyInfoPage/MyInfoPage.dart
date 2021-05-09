@@ -7,13 +7,17 @@ import './Sections/MyMainInfo.dart';
 import './Sections/TimeLine.dart';
 import './Sections/ListElement.dart';
 
-_MyInfoPageState myInfoPageState = _MyInfoPageState();
+_MyInfoPageState myInfoPageState;
+
+_MyInfoPageState makeInstanceOfMyInfoPage() {
+  return myInfoPageState = _MyInfoPageState();
+}
 
 class MyInfoPage extends StatefulWidget {
   static const id = "myInfo_page";
 
   @override
-  _MyInfoPageState createState() => myInfoPageState;
+  _MyInfoPageState createState() => makeInstanceOfMyInfoPage();
 }
 
 class WidgetState {
@@ -32,17 +36,7 @@ class WidgetState {
 
 var random = new Random();
 class _MyInfoPageState extends State<MyInfoPage> {
-  WidgetState state = WidgetState(
-    name: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
-    email: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
-    phoneNumber: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
-    follower: random.nextInt(100),
-    following: random.nextInt(100),
-    like: random.nextInt(100),
-    review: random.nextInt(100),
-    visited: random.nextInt(100),
-    favorite: random.nextInt(100)
-  );
+  WidgetState state;
 
   void reloadInfo() {
     setState(() {
@@ -58,6 +52,22 @@ class _MyInfoPageState extends State<MyInfoPage> {
         favorite: random.nextInt(100)
       );
     });
+  }
+
+  @override
+  void initState() {
+    state = WidgetState(
+      name: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
+      email: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
+      phoneNumber: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
+      follower: random.nextInt(100),
+      following: random.nextInt(100),
+      like: random.nextInt(100),
+      review: random.nextInt(100),
+      visited: random.nextInt(100),
+      favorite: random.nextInt(100)
+    );
+    super.initState();
   }
 
   @override
@@ -82,10 +92,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
             ListElement(icon: Icon(Icons.sync_alt), title: "관리모드 전환"),
             Divider(thickness: 1,),
             ListElement(icon: Icon(Icons.exit_to_app), title: "로그아웃", onTap: () {
-              //Navigator.pushReplacementNamed(context, LoginPage.id);
-              setState(() {
-                state.review++;
-              });
+              Navigator.pushReplacementNamed(context, LoginPage.id);
             }),
             Divider(thickness: 1,),
           ],

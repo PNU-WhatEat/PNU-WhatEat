@@ -21,7 +21,7 @@ class TimeLine extends StatelessWidget {
         title: "타임라인", 
         value: (review+visited).toString(), 
         onTap: () { 
-          Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(category : 1 & 2)); 
+          Navigator.pushNamed(context, TimeLinePage.id, arguments:TimeLinePageArguments(category : 1 | 2)); 
         }
       ), // dummy
       Row(children: [
