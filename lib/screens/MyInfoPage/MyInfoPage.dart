@@ -41,7 +41,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
   void reloadInfo() {
     setState(() {
       state = WidgetState(
-        name: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
+        name: base64Encode(List<int>.generate(3, (index) => random.nextInt(100))),
         email: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
         phoneNumber: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
         follower: random.nextInt(100),
@@ -57,7 +57,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
   @override
   void initState() {
     state = WidgetState(
-      name: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
+      name: base64Encode(List<int>.generate(3, (index) => random.nextInt(100))),
       email: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
       phoneNumber: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
       follower: random.nextInt(100),

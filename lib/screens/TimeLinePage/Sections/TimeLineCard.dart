@@ -12,7 +12,8 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border.all()),
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+      decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10.0)),
       height: 80,
       child: Row(
         children: [
