@@ -18,7 +18,7 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     final EditPageArgs args = ModalRoute.of(context).settings.arguments;
-    UserProvider userinfo = Provider.of<UserProvider>(context);
+    UserInformation userinfo = Provider.of<UserInformation>(context);
 
     return Scaffold(
         appBar: AppBar(

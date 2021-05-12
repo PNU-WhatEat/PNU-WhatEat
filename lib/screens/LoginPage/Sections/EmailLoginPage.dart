@@ -14,12 +14,12 @@ class EmailLoginPage extends StatefulWidget {
 class _EmailLoginPageState extends State<EmailLoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  UserProvider userinfo;
+  UserInformation userinfo;
 
   Widget build(BuildContext context) {
-    userinfo = Provider.of<UserProvider>(context);
+    userinfo = Provider.of<UserInformation>(context);
     emailController.text = "whquddn55@gmail.com";
-    passwordController.text = "whxnxl55;;";
+    passwordController.text = "test123";
     return Scaffold(
       appBar: AppBar(
         title: Text("로그인"),

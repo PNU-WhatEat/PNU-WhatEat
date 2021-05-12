@@ -10,7 +10,7 @@ class MyInfoPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    UserProvider userinfo = Provider.of<UserProvider>(context);
+    UserInformation userinfo = Provider.of<UserInformation>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),

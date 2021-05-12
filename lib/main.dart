@@ -26,7 +26,7 @@ class WhatEat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
+        ChangeNotifierProvider<UserInformation>(create: (context) => UserInformation()),
       ],
       child: MaterialApp(
         initialRoute: AuthPage.id,

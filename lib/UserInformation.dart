@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:what_eat/UserInfo.dart';
 
-class UserProvider with ChangeNotifier {
+class UserInformation with ChangeNotifier {
   final FirebaseAuth fAuth = FirebaseAuth.instance; // Firebase 인증 플러그인의 인스턴스
   User _user; // Firebase에 로그인 된 사용자
   Info info = Info();
 
   String _lastFirebaseResponse = ""; // Firebase로부터 받은 최신 메시지(에러 처리용)
 
-  UserProvider() {
+  UserInformation() {
     _prepareUser();
   }
 
@@ -30,7 +30,7 @@ class UserProvider with ChangeNotifier {
   }
 
   // 이메일/비밀번호로 Firebase에 회원가입
-  Future<bool> signUpWithEmail(String email, String password) async {
+  Future<bool> signUpWithEmail(String name, String phoneNumber, String email, String password) async {
     try {
       UserCredential result = await fAuth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -39,6 +39,17 @@ class UserProvider with ChangeNotifier {
         result.user.sendEmailVerification();
         // 새로운 계정 생성이 성공하였으므로 기존 계정이 있을 경우 로그아웃 시킴
         signOut();
+        FirebaseFirestore.instance.collection("User").doc(result.user.uid).set({
+          'name': name,
+          'email': email,
+          'phoneNumber': phoneNumber,
+          'follower': 0,
+          'following': 0,
+          'like': 0,
+          'review': 0,
+          'visited': 0,
+          'favorite': 0,
+        });
         return true;
       }
       return false;
@@ -70,8 +81,7 @@ class UserProvider with ChangeNotifier {
             );
             print(doc['name']);
             notifyListeners();
-          } 
-        );
+        });
         return true;
       }
       return false;

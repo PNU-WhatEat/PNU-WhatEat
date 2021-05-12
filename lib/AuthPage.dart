@@ -14,10 +14,10 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  UserProvider userinfo;
+  UserInformation userinfo;
   @override
   Widget build(BuildContext context) {
-    userinfo = Provider.of<UserProvider>(context);
+    userinfo = Provider.of<UserInformation>(context);
     if (userinfo.getUser() != null && userinfo.getUser().emailVerified == true) {
       return MyInfoPage();
     } else {

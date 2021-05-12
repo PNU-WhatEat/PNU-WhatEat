@@ -16,7 +16,7 @@ class EditInfoPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    UserProvider userinfo = Provider.of<UserProvider>(context);
+    UserInformation userinfo = Provider.of<UserInformation>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('내 정보 수정'),

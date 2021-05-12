@@ -17,12 +17,12 @@ class SignUpPageState extends State<SignUpPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  UserProvider userinfo;
+  UserInformation userinfo;
 
   @override
   Widget build(BuildContext context) {
     if (userinfo == null) {
-      userinfo = Provider.of<UserProvider>(context);
+      userinfo = Provider.of<UserInformation>(context);
     }
 
     return Scaffold(
@@ -111,11 +111,12 @@ class SignUpPageState extends State<SignUpPage> {
           ],
         ),
       ));
-    bool result = await userinfo.signUpWithEmail(emailController.text, passwordController.text);
+    bool result = await userinfo.signUpWithEmail(nameController.text, phoneNumberController.text, emailController.text, passwordController.text);
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     if (result) {
       Navigator.pop(context);
-    } else {
+    }
+    else {
       showLastFBMessage();
     }
   }
