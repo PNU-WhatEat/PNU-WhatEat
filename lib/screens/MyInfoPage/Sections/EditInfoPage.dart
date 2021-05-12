@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:what_eat/UserInformation.dart';
 import 'ListElement.dart';
 import 'EditPage.dart';
-import 'MyMainInfo.dart';
 
 class EditPageArgs {
   final String title;
@@ -10,39 +11,12 @@ class EditPageArgs {
   EditPageArgs({this.title, this.message});
 }
 
-class EditInfoPage extends StatefulWidget {
+class EditInfoPage extends StatelessWidget {
   static const id = "editInfo_Page";
-
-  @override
-  _EditInfoPageState createState() => _EditInfoPageState();
-}
-
-class WidgetState {
-  String name;
-  String email;
-  String phoneNumber;
-
-  WidgetState({this.name, this.email, this.phoneNumber});
-}
-class _EditInfoPageState extends State<EditInfoPage> {
-  WidgetState state = WidgetState();
-
-  @override
-  void initState() {
-    super.initState();
-
-    final widgetsBinding = WidgetsBinding.instance;
-    widgetsBinding.addPostFrameCallback((callback) {
-      setState(() {
-        state.name = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).name;
-        state.email = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).email;
-        state.phoneNumber = (ModalRoute.of(context).settings.arguments as EditInfoPageArgs).phoneNumber;
-      });
-    });
-  }
   
   @override
   Widget build(BuildContext context) {
+    UserProvider userinfo = Provider.of<UserProvider>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('내 정보 수정'),
@@ -64,13 +38,13 @@ class _EditInfoPageState extends State<EditInfoPage> {
               ),
               ListElement(
                   title: "이름",
-                  value: state.name,
+                  value: userinfo.info.name,
                   onTap: () {
                     _navigateAndDisplaySelection(
                       ctx,
                       EditPageArgs(
                           title : '이름 변경',
-                          message : '이름'
+                          message : '이름',
                       )
                     );
                   }),
@@ -79,13 +53,13 @@ class _EditInfoPageState extends State<EditInfoPage> {
               ),
               ListElement(
                   title: "이메일",
-                  value: state.email,
+                  value: userinfo.info.email,
                   onTap: () {
                     _navigateAndDisplaySelection(
                       ctx,
                       EditPageArgs(
                           title : '이메일 변경',
-                          message : '이메일'
+                          message : '이메일',
                       )
                     );
                   }),
@@ -94,13 +68,13 @@ class _EditInfoPageState extends State<EditInfoPage> {
               ),
               ListElement(
                   title: "전화번호",
-                  value: state.phoneNumber,
+                  value: userinfo.info.phoneNumber,
                   onTap: () {
                     _navigateAndDisplaySelection(
                       ctx,
                       EditPageArgs(
                           title : '전화번호 변경',
-                          message : '전화번호'
+                          message : '전화번호',
                       )
                     );
                   }),
@@ -114,7 +88,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                       ctx,
                       EditPageArgs(
                           title : '비밀번호 변경',
-                          message : '비밀번호'
+                          message : '비밀번호',
                       )
                     );
                   }),
@@ -129,31 +103,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
   _navigateAndDisplaySelection(BuildContext context, EditPageArgs arguments) async {
     final result = await Navigator.pushNamed(context, EditPage.id, arguments: arguments);
 
-    if (result == null)
-      return;
-    
-    if ((result as ReturnValue).success) {
-      if ((result as ReturnValue).message == '이름')
-        setState(() {
-          state.name = (result as ReturnValue).value;
-        });
-      else if ((result as ReturnValue).message == '이메일')
-        setState(() {
-          state.email = (result as ReturnValue).value;
-        });
-      else if ((result as ReturnValue).message == '전화번호')
-        setState(() {
-          state.phoneNumber = (result as ReturnValue).value;
-        });
-      else {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(
-              content: Text('Exception: Error on return message')
-          ));
-      }
-    }
-    else {
+    if (result == false) {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:what_eat/screens/LoginPage/Sections/EmailLoginPage.dart';
 
-import 'MyInfoPage/MyInfoPage.dart';
+import '../MyInfoPage/MyInfoPage.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   static const id = 'login_page';
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -26,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
               SignInButton(Buttons.Google,
                 onPressed: () {
                   // Todo : login
+                  
                   Navigator.pushReplacementNamed(context, MyInfoPage.id);
                 },
               ),
@@ -33,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
               SignInButton(Buttons.Email, 
                 onPressed: () {
                   // Todo : login
-                  Navigator.pushReplacementNamed(context, MyInfoPage.id);
+                  Navigator.pushNamed(context, EmailLoginPage.id);
                 },
               ),
               SizedBox(height: 100),

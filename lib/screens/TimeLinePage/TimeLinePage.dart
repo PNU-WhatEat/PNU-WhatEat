@@ -14,7 +14,7 @@ class TimeLinePage extends StatefulWidget {
 
 class WidgetState {
   int category;
-  List<ReviewCard> list = [];
+  List<TimeLineCard> list = [];
 }
 
 var random = new Random();
@@ -33,7 +33,7 @@ class _TimeLinePageState extends State<TimeLinePage> {
     });
 
     for (int i = 0; i < 10; ++i) {
-      state.list.add(ReviewCard(
+      state.list.add(TimeLineCard(
         type: random.nextInt(2) + 1, 
         storeTitle: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
         time: base64Encode(List<int>.generate(8, (index) => random.nextInt(100))),
@@ -42,8 +42,8 @@ class _TimeLinePageState extends State<TimeLinePage> {
     }
   }
 
-  List<ReviewCard> filterList({int category, String storeTitle, double maxStoreRate, double minStoreRate}) {
-    List<ReviewCard> filteredList = [];
+  List<TimeLineCard> filterList({int category, String storeTitle, double maxStoreRate, double minStoreRate}) {
+    List<TimeLineCard> filteredList = [];
     for (var element in state.list) {
       print(element.type);
       if (category != null && (element.type & category) != 0)

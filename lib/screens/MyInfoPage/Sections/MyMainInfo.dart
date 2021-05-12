@@ -5,8 +5,9 @@ class EditInfoPageArgs {
   final String name;
   final String email;
   final String phoneNumber;
+  final String userid;
 
-  EditInfoPageArgs({this.name, this.email, this.phoneNumber});
+  EditInfoPageArgs({this.name, this.email, this.phoneNumber, this.userid});
 }
 
 class MyMainInfo extends StatelessWidget{
@@ -17,8 +18,9 @@ class MyMainInfo extends StatelessWidget{
   final int follower;
   final int following;
   final int like;
+  final String userid;
 
-  MyMainInfo({this.name, this.email, this.phoneNumber, this.follower, this.following, this.like});
+  MyMainInfo({this.name, this.email, this.phoneNumber, this.follower, this.following, this.like, this.userid});
   @override
   Widget build(BuildContext context) {
     return Row( children: [
@@ -66,7 +68,7 @@ class MyMainInfo extends StatelessWidget{
       ),
       OutlinedButton.icon(
         onPressed: () {
-          Navigator.pushNamed(context, EditInfoPage.id, arguments: EditInfoPageArgs(name: this.name, email: this.email, phoneNumber: this.phoneNumber));
+          Navigator.pushNamed(context, EditInfoPage.id, arguments: EditInfoPageArgs(name: this.name, email: this.email, phoneNumber: this.phoneNumber, userid: this.userid));
         }, 
         icon: Icon(Icons.edit),
         label: Text("수정"),
