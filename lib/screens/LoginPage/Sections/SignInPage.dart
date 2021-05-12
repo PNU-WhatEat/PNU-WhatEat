@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
-
 import 'SignUpPage.dart';
 
-class EmailLoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   static const id = 'emailLogin_page';
 
   @override
-  _EmailLoginPageState createState() => _EmailLoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _EmailLoginPageState extends State<EmailLoginPage> {
+class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   UserInformation userinfo;

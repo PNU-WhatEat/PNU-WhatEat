@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Info with ChangeNotifier {
+class UserData with ChangeNotifier {
   String name;
   String email;
   String phoneNumber;
@@ -11,7 +11,7 @@ class Info with ChangeNotifier {
   int visited;
   int favorite;
 
-  Info({this.name="0", this.email="0", this.phoneNumber="0", this.follower=0, this.following=0, this.like=0, this.review=0, this.visited=0, this.favorite=0});
+  UserData({this.name="0", this.email="0", this.phoneNumber="0", this.follower=0, this.following=0, this.like=0, this.review=0, this.visited=0, this.favorite=0});
 
   void set({String name : "0", String email : "0", String phoneNumber : "0", int follower : 0, int following : 0, int like : 0, int review : 0, int visited : 0, int favorite : 0}) {
     this.name = name;

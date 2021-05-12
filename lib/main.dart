@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:what_eat/AuthPage.dart';
 import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/DetailPage.dart';
-import 'package:what_eat/screens/LoginPage/Sections/EmailLoginPage.dart';
+import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
 import 'package:what_eat/screens/MainPage.dart';
 import 'package:what_eat/screens/ReservationPage.dart';
 import 'package:what_eat/screens/ReviewPage.dart';
@@ -12,7 +12,7 @@ import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditInfoPage.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditPage.dart';
 import 'package:what_eat/screens/TimeLinePage/TimeLinePage.dart';
-import 'package:what_eat/screens/LoginPage/LoginPage.dart';
+import 'package:what_eat/screens/LoginPage/LandingPage.dart';
 
 
 void main() async {
@@ -39,8 +39,8 @@ class WhatEat extends StatelessWidget {
           EditInfoPage.id: (context) => EditInfoPage(),
           EditPage.id: (context) => EditPage(),
           TimeLinePage.id: (context) => TimeLinePage(),
-          LoginPage.id: (context) => LoginPage(),
-          EmailLoginPage.id: (context) => EmailLoginPage(),
+          LandingPage.id: (context) => LandingPage(),
+          SignInPage.id: (context) => SignInPage(),
           AuthPage.id: (context) => AuthPage(),
         },
       ),

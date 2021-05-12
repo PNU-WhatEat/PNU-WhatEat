@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
-import 'package:what_eat/UserInfo.dart';
+import 'package:what_eat/UserData.dart';
 
 class UserInformation with ChangeNotifier {
   final FirebaseAuth fAuth = FirebaseAuth.instance; // Firebase 인증 플러그인의 인스턴스
   User _user; // Firebase에 로그인 된 사용자
-  Info info = Info();
+  UserData info = UserData();
 
   String _lastFirebaseResponse = ""; // Firebase로부터 받은 최신 메시지(에러 처리용)
 
@@ -53,9 +52,8 @@ class UserInformation with ChangeNotifier {
         return true;
       }
       return false;
-    } on Exception catch (e) {
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
+    } on FirebaseAuthException catch (e) {
+      setLastFBMessage(e.code);
       return false;
     }
   }
@@ -85,17 +83,8 @@ class UserInformation with ChangeNotifier {
         return true;
       }
       return false;
-    } on PlatformException catch (e) {
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
-      return false;
-    } on Exception catch (e) {
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
-      return false;
-    } catch (e) {
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
+    } on FirebaseAuthException catch (e) {
+      setLastFBMessage(e.code);
       return false;
     }
   }

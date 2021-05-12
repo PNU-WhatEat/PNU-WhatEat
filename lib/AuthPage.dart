@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:what_eat/screens/LoginPage/LoginPage.dart';
+import 'package:what_eat/screens/LoginPage/LandingPage.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
 
 import 'UserInformation.dart';
@@ -21,7 +21,7 @@ class _AuthPageState extends State<AuthPage> {
     if (userinfo.getUser() != null && userinfo.getUser().emailVerified == true) {
       return MyInfoPage();
     } else {
-      return LoginPage();
+      return LandingPage();
     }
   }
 }

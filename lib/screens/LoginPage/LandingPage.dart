@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:what_eat/screens/LoginPage/Sections/EmailLoginPage.dart';
+import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
 
 import '../MyInfoPage/MyInfoPage.dart';
 
-class LoginPage extends StatelessWidget {
+class LandingPage extends StatelessWidget {
   static const id = 'login_page';
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
               SignInButton(Buttons.Email, 
                 onPressed: () {
                   // Todo : login
-                  Navigator.pushNamed(context, EmailLoginPage.id);
+                  Navigator.pushNamed(context, SignInPage.id);
                 },
               ),
               SizedBox(height: 100),
