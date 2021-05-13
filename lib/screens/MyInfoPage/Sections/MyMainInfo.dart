@@ -26,11 +26,7 @@ class MyMainInfo extends StatelessWidget{
     return Row( children: [
       Row( children: [
           Column( children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage('images/default_icon.png'),
-                backgroundColor: Colors.transparent,
-              ),
+              Icon(Icons.account_circle, size: 80, color: Colors.blue),
               Container(
                 child: Text(name,
                   style: TextStyle(

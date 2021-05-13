@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:provider/provider.dart';
 import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
-
-import '../MyInfoPage/MyInfoPage.dart';
+import 'package:what_eat/UserInformation.dart';
 
 class LandingPage extends StatelessWidget {
   static const id = 'login_page';
+  @override
   Widget build(BuildContext context) {
+    UserInformation userinfo = Provider.of<UserInformation>(context);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -18,16 +20,27 @@ class LandingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SignInButton(Buttons.Google,
-                onPressed: () {
-                  // Todo : login
-                  
-                  Navigator.pushReplacementNamed(context, MyInfoPage.id);
+                onPressed: () async {
+                  bool result = await userinfo.signInWithGoogleAccount();
+                  if (result == false) {
+                    ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      backgroundColor: Colors.red[400],
+                      duration: Duration(seconds: 10),
+                      content: Text(userinfo.getLastFBMessage()),
+                      action: SnackBarAction(
+                        label: "Done",
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    ));
+                  }
                 },
               ),
               SizedBox(height: 30),
               SignInButton(Buttons.Email, 
                 onPressed: () {
-                  // Todo : login
                   Navigator.pushNamed(context, SignInPage.id);
                 },
               ),

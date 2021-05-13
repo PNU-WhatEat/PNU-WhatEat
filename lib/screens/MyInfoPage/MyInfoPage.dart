@@ -22,15 +22,15 @@ class MyInfoPage extends StatelessWidget {
               thickness: 10,
             ),
             TimeLine(review: userinfo.info.review, visited: userinfo.info.visited),
-            ListElement(icon: Icon(Icons.favorite), title: "즐겨찾기", value: userinfo.info.favorite.toString(), onTap: () {
+            ListElement(icon: Icon(Icons.favorite, color: Colors.blue), title: "즐겨찾기", value: userinfo.info.favorite.toString(), onTap: () {
               // Todo : navigate to favoritePage
             }), 
             Divider(thickness: 1,),
-            ListElement(icon: Icon(Icons.house), title: "내 가게"),
+            ListElement(icon: Icon(Icons.house, color: Colors.blue), title: "내 가게"),
             Divider(thickness: 1,),
-            ListElement(icon: Icon(Icons.sync_alt), title: "관리모드 전환"),
+            ListElement(icon: Icon(Icons.sync_alt, color: Colors.blue), title: "관리모드 전환"),
             Divider(thickness: 1,),
-            ListElement(icon: Icon(Icons.exit_to_app), title: "로그아웃", onTap: () async {
+            ListElement(icon: Icon(Icons.exit_to_app, color: Colors.blue), title: "로그아웃", onTap: () async {
               await userinfo.signOut();
             }),
             Divider(thickness: 1,),

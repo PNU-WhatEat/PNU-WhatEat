@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-class UserData with ChangeNotifier {
+class UserData {
   String name;
   String email;
   String phoneNumber;
@@ -23,41 +21,5 @@ class UserData with ChangeNotifier {
     this.review = review;
     this.visited = visited;
     this.favorite = favorite;
-    notifyListeners();
-  }
-
-  void setName(String name) {
-    this.name = name;
-    notifyListeners();
-  }
-
-  void setEmail(String email) {
-    this.email = email;
-    notifyListeners();
-  }
-
-  void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-    notifyListeners();
-  }
-
-  void incrementFollowing() {
-    ++this.following;
-    notifyListeners();
-  }
-
-  void incrementReview() {
-    ++this.review;
-    notifyListeners();
-  }
-
-  void incrementVisited() {
-    ++this.visited;
-    notifyListeners();
-  }
-
-  void incrementFavorite() {
-    ++this.favorite;
-    notifyListeners();
   }
 }

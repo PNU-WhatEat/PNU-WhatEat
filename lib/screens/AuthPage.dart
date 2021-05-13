@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:what_eat/screens/LoginPage/LandingPage.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
 
-import 'UserInformation.dart';
+import '../UserInformation.dart';
 
 
 class AuthPage extends StatefulWidget {

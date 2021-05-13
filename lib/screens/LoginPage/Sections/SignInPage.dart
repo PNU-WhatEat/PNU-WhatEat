@@ -15,10 +15,9 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController passwordController = TextEditingController();
   UserInformation userinfo;
 
+  @override
   Widget build(BuildContext context) {
     userinfo = Provider.of<UserInformation>(context);
-    emailController.text = "whquddn55@gmail.com";
-    passwordController.text = "test123";
     return Scaffold(
       appBar: AppBar(
         title: Text("로그인"),
@@ -113,7 +112,7 @@ class _SignInPageState extends State<SignInPage> {
     else Navigator.pop(context);
   }
 
-  showLastFBMessage() {
+  void showLastFBMessage() {
     ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(

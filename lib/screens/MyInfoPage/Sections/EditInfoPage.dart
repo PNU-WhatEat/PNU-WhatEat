@@ -55,13 +55,9 @@ class EditInfoPage extends StatelessWidget {
                   title: "이메일",
                   value: userinfo.info.email,
                   onTap: () {
-                    _navigateAndDisplaySelection(
-                      ctx,
-                      EditPageArgs(
-                          title : '이메일 변경',
-                          message : '이메일',
-                      )
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text("구현중인 기능입니다."), duration: Duration(seconds: 1)));
                   }),
               Divider(
                 thickness: 1,
@@ -82,15 +78,35 @@ class EditInfoPage extends StatelessWidget {
                 thickness: 1,
               ),
               ListElement(
-                  title: "비밀번호",
+                  title: "비밀번호 재설정",
                   onTap: () {
-                    _navigateAndDisplaySelection(
-                      ctx,
-                      EditPageArgs(
-                          title : '비밀번호 변경',
-                          message : '비밀번호',
-                      )
-                    );
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("비밀번호 재설정"),
+                          content: Text("비밀번호 재설정 이메일을 보내고\n로그아웃합니다."),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          actions: [
+                            TextButton(
+                              child: Text("확인"), 
+                              onPressed: () {
+                                userinfo.sendPasswordResetEmail();
+                                userinfo.signOut();
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
+                            ),
+                            TextButton(
+                              child: Text("취소"), 
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                            )
+                          ]
+                        );
+                    });
                   }),
               Divider(
                 thickness: 1,

@@ -43,39 +43,20 @@ class _EditPageState extends State<EditPage> {
                         setState(() => {isButtonEnable = null});
                       else
                         setState(() => {isButtonEnable = () {
-                          /* if (args.message.compareTo("이름") == 0) {
-                            FirebaseFirestore.instance.collection("User").doc(userinfo.info.userid).update({
-                              'name': controller.text
-                            }).then((_) {
-                              userinfo.info.setName(controller.text);
+                          if (args.message.compareTo("이름") == 0) {
+                            userinfo.setName(controller.text).then((_) {
                               Navigator.pop(context, true);
-                            }).catchError(() {
+                            }).catchError((_) {
                               Navigator.pop(context, false);
                             });
                           }
-                          else if (args.message.compareTo("이메일") == 0) {
-                            FirebaseFirestore.instance.collection("User").doc(userinfo.info.userid).update({
-                              'email': controller.text
-                            }).then((_) {
-                              userinfo.info.setEmail(controller.text);
+                          else if (args.message.compareTo("전화번호") == 0) {
+                            userinfo.setPhoneNumber(controller.text).then((_) {
                               Navigator.pop(context, true);
-                            }).catchError(() {
+                            }).catchError((_) {
                               Navigator.pop(context, false);
                             });
                           }
-                          else if (args.message.compareTo("전화번호") == 0)
-                            FirebaseFirestore.instance.collection("User").doc(userinfo.info.userid).update({
-                              'phoneNumber': controller.text
-                            })..then((_) {
-                              userinfo.info.setPhoneNumber(controller.text);
-                              Navigator.pop(context, true);
-                            }).catchError(() {
-                              Navigator.pop(context, false);
-                            });
-                          /* else if (args.message.compareTo("비밀번호") == 0)
-                            FirebaseFirestore.instance.collection("User").doc(args.userid).update({
-                              'name': controller.text
-                            });  */ */
                         }});
                     },
                   ),

@@ -17,7 +17,7 @@ class TimeLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       ListElement(
-        icon: Icon(Icons.timer),
+        icon: Icon(Icons.timer, color: Colors.blue),
         title: "타임라인", 
         value: (review+visited).toString(), 
         onTap: () { 
