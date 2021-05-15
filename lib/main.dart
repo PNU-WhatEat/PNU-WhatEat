@@ -16,7 +16,7 @@ class WhatEat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: LoginPage.id,
+      initialRoute: MainPage.id,
       routes: {
         MainPage.id: (context) => MainPage(),
         DetailPage.id: (context) => DetailPage(),
