@@ -6,6 +6,7 @@ import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/DetailPage.dart';
 import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
 import 'package:what_eat/screens/MainPage.dart';
+import 'package:what_eat/screens/MyHomePage.dart';
 import 'package:what_eat/screens/ReservationPage.dart';
 import 'package:what_eat/screens/ReviewPage.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
@@ -42,8 +43,10 @@ class WhatEat extends StatelessWidget {
           LandingPage.id: (context) => LandingPage(),
           SignInPage.id: (context) => SignInPage(),
           AuthPage.id: (context) => AuthPage(),
+          '/':(context) => MyHomePage(title: 'WhatEat'),
         },
       ),
+
     );
   }
 }

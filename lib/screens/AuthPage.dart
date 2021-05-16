@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/screens/LoginPage/LandingPage.dart';
-import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
+import 'package:what_eat/screens/MyHomePage.dart';
 
 import '../UserInformation.dart';
 
@@ -19,7 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     userinfo = Provider.of<UserInformation>(context);
     if (userinfo.getUser() != null && userinfo.getUser().emailVerified == true) {
-      return MyInfoPage();
+      return MyHomePage();
     } else {
       return LandingPage();
     }
