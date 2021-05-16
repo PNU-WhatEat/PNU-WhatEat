@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ReviewCard extends StatelessWidget {
+class TimeLineCard extends StatelessWidget {
   static const id = 'detail_page';
   @required final int type;
   @required final String storeTitle;
   @required final String time;
   final double storeRate;
 
-  ReviewCard({this.type, this.storeTitle, this.time, this.storeRate = -1.0});
+  TimeLineCard({this.type, this.storeTitle, this.time, this.storeRate = -1.0});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border.all()),
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+      decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10.0)),
       height: 80,
       child: Row(
         children: [

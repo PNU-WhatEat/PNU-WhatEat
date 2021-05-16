@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
+import 'package:provider/provider.dart';
+import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditInfoPage.dart';
-
-class ReturnValue {
-  bool success;
-  String message;
-  String value;
-
-  ReturnValue({this.success, this.message, this.value});
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditPage extends StatefulWidget {
   static const id = "edit_Page";
@@ -24,6 +18,7 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     final EditPageArgs args = ModalRoute.of(context).settings.arguments;
+    UserInformation userinfo = Provider.of<UserInformation>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -42,19 +37,26 @@ class _EditPageState extends State<EditPage> {
                       labelText: args.message,
                     ),
                     obscureText:
-                        (args.message.compareTo("비밀 번호") == 0 ? true : false),
+                        (args.message.compareTo("비밀번호") == 0 ? true : false),
                     onChanged: (text) {
                       if (text.isEmpty)
                         setState(() => {isButtonEnable = null});
                       else
                         setState(() => {isButtonEnable = () {
-                          // Todo: 서버에 정보수정 요청
-                          myInfoPageState.reloadInfo();
-                          Navigator.pop(context, ReturnValue(
-                            success: true,
-                            message: args.message,
-                            value: controller.text
-                          )); // 정보수정이 됐으면 true 반환 else 재수정 요청
+                          if (args.message.compareTo("이름") == 0) {
+                            userinfo.setName(controller.text).then((_) {
+                              Navigator.pop(context, true);
+                            }).catchError((_) {
+                              Navigator.pop(context, false);
+                            });
+                          }
+                          else if (args.message.compareTo("전화번호") == 0) {
+                            userinfo.setPhoneNumber(controller.text).then((_) {
+                              Navigator.pop(context, true);
+                            }).catchError((_) {
+                              Navigator.pop(context, false);
+                            });
+                          }
                         }});
                     },
                   ),

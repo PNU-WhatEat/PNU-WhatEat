@@ -14,7 +14,7 @@ class ListElement extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(children: [
           Row(children: [
-            icon == null ? SizedBox.shrink() : Icon(icon.icon),
+            icon == null ? SizedBox.shrink() : icon,
             icon == null ? SizedBox.shrink() : SizedBox(width: 5.0,),
             Text(title, style: TextStyle(fontSize: 20),),
           ],),

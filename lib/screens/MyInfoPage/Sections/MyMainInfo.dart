@@ -5,8 +5,9 @@ class EditInfoPageArgs {
   final String name;
   final String email;
   final String phoneNumber;
+  final String userid;
 
-  EditInfoPageArgs({this.name, this.email, this.phoneNumber});
+  EditInfoPageArgs({this.name, this.email, this.phoneNumber, this.userid});
 }
 
 class MyMainInfo extends StatelessWidget{
@@ -17,18 +18,15 @@ class MyMainInfo extends StatelessWidget{
   final int follower;
   final int following;
   final int like;
+  final String userid;
 
-  MyMainInfo({this.name, this.email, this.phoneNumber, this.follower, this.following, this.like});
+  MyMainInfo({this.name, this.email, this.phoneNumber, this.follower, this.following, this.like, this.userid});
   @override
   Widget build(BuildContext context) {
     return Row( children: [
       Row( children: [
           Column( children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage('images/default_icon.png'),
-                backgroundColor: Colors.transparent,
-              ),
+              Icon(Icons.account_circle, size: 80, color: Colors.blue),
               Container(
                 child: Text(name,
                   style: TextStyle(
@@ -66,7 +64,7 @@ class MyMainInfo extends StatelessWidget{
       ),
       OutlinedButton.icon(
         onPressed: () {
-          Navigator.pushNamed(context, EditInfoPage.id, arguments: EditInfoPageArgs(name: this.name, email: this.email, phoneNumber: this.phoneNumber));
+          Navigator.pushNamed(context, EditInfoPage.id, arguments: EditInfoPageArgs(name: this.name, email: this.email, phoneNumber: this.phoneNumber, userid: this.userid));
         }, 
         icon: Icon(Icons.edit),
         label: Text("수정"),

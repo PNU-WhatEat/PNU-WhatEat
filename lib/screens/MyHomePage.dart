@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Widget> _children = [MainPage(), SearchPage(), MyInfoPage(), MyInfoPage()];
+  final List<Widget> _children = [MainPage(), SearchPage(), SearchPage(), MyInfoPage()];
   // 위에 이동할 page 차례대로 입력
   int _currentIndex = 0;
 
@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
           controller: pageController,
           onPageChanged: onPageChangeHandler,
           children: _children,
-          // physics: NeverScrollableScrollPhysics()
         ),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
