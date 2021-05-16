@@ -20,35 +20,6 @@ class MainPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.close,
-            ),
-            label: "Hello",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.close,
-            ),
-            label: "Hello",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.close,
-            ),
-            label: "Hello",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.close,
-            ),
-            label: "Hello",
-          ),
-        ],
-      ),
     );
   }
 }
