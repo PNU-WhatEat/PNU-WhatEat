@@ -37,6 +37,7 @@ class UserInformation with ChangeNotifier {
         'review': 0,
         'visited': 0,
         'favorite': 0,
+        'storeRef': null,
       });
       return true;
     } catch (e) {
@@ -58,6 +59,7 @@ class UserInformation with ChangeNotifier {
           review: doc["review"],
           visited: doc["visited"],
           favorite: doc["favorite"],
+          storeRef: doc["storeRef"],
         );
         notifyListeners();
       });
@@ -143,6 +145,7 @@ class UserInformation with ChangeNotifier {
               'review': 0,
               'visited': 0,
               'favorite': 0,
+              'storeRef': null,
             });
         });
       await _getInfoFromFirebase(user.uid);
@@ -271,4 +274,18 @@ class UserInformation with ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> setStore(DocumentReference storeRef) async {
+    try {
+      FirebaseFirestore.instance.collection('User').doc(_user.uid).update({'storeRef' : storeRef});
+      info.storeRef = storeRef;
+    }
+    on Exception catch (e) {
+      print("Error@@@@@@@@@@@@@@@@@@@@@@@@@$e");
+      return false;
+    }
+    notifyListeners();
+    return true;
+  }
+  
 }

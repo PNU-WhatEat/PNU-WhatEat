@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
+import 'package:what_eat/screens/MyStorePage/MyStorePage.dart';
 import './Sections/MyMainInfo.dart';
 import './Sections/TimeLine.dart';
 import './Sections/ListElement.dart';
@@ -26,7 +27,9 @@ class MyInfoPage extends StatelessWidget {
               // Todo : navigate to favoritePage
             }), 
             Divider(thickness: 1,),
-            ListElement(icon: Icon(Icons.house, color: Colors.blue), title: "내 가게"),
+            ListElement(icon: Icon(Icons.house, color: Colors.blue), title: "내 가게", onTap: () {
+              Navigator.pushNamed(context, MyStorePage.id);
+            }),
             Divider(thickness: 1,),
             ListElement(icon: Icon(Icons.sync_alt, color: Colors.blue), title: "관리모드 전환"),
             Divider(thickness: 1,),
