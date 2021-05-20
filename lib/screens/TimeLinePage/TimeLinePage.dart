@@ -65,12 +65,6 @@ class _TimeLinePageState extends State<TimeLinePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('타임 라인'),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context, false);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
       ),
       body: Column(
         children: [
