@@ -106,7 +106,7 @@ class _AddStorePageState extends State<AddStorePage> {
                       autofocus: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: '검색할 가게 이름을 입력하세요'
+                        labelText: '가게 이름'
                       ),
                       onSubmitted: (value) {
                         searchPressed();
@@ -124,12 +124,11 @@ class _AddStorePageState extends State<AddStorePage> {
                 )
               ],
             ),
-            
-              Flexible(
-                child: ListView(
-                  children: renderList(),
-                ),
-              )
+            Flexible(
+              child: ListView(
+                children: renderList(),
+              ),
+            )
           ],
         ),
       )

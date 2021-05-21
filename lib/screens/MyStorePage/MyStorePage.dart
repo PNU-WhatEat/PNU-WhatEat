@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
+import 'package:what_eat/screens/MyStorePage/Sections/ManageMenuPage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/ManageTablePage.dart';
 
 import 'Sections/AddStorePage.dart';
@@ -88,7 +89,7 @@ class _MyStorePageState extends State<MyStorePage> {
                       ],
                     ),
                     onTap: () {
-                      
+                      Navigator.pushNamed(context, ManageMenuPage.id);
                     }
                   ),
                   InkWell(
