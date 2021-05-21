@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
+import 'package:what_eat/screens/MyStorePage/Sections/ManageTablePage.dart';
 
 import 'Sections/AddStorePage.dart';
 
@@ -30,18 +31,18 @@ class _MyStorePageState extends State<MyStorePage> {
   UserInformation userinfo;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userinfo = Provider.of<UserInformation>(context);
-    if (userinfo.info.storeRef != null) {
-      userinfo.info.storeRef.get().then((doc) {
-        Map<String, dynamic> result = doc.data();
-        setState(() {
-          store = _Store(title: result['title'], rate: result['rate'], reviews: result['reviews'], isOpen: result['isOpen']);
+    void initState() {
+      super.initState();
+      userinfo = Provider.of<UserInformation>(context, listen: false);
+      if (userinfo.info.storeRef != null) {
+        userinfo.info.storeRef.get().then((doc) {
+          Map<String, dynamic> result = doc.data();
+          setState(() {
+            store = _Store(title: result['title'], rate: result['rate'], reviews: result['reviews'], isOpen: result['isOpen']);
+          });
         });
-      });
+      }
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class _MyStorePageState extends State<MyStorePage> {
                       ],
                     ),
                     onTap: () {
-
+                      Navigator.pushNamed(context, ManageTablePage.id);
                     }
                   ),
                   InkWell(

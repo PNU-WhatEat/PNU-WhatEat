@@ -9,6 +9,7 @@ import 'package:what_eat/screens/MainPage.dart';
 import 'package:what_eat/screens/MyHomePage.dart';
 import 'package:what_eat/screens/MyStorePage/MyStorePage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/AddStorePage.dart';
+import 'package:what_eat/screens/MyStorePage/Sections/ManageTablePage.dart';
 import 'package:what_eat/screens/ReservationPage.dart';
 import 'package:what_eat/screens/ReviewPage.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
@@ -48,6 +49,7 @@ class WhatEat extends StatelessWidget {
           '/':(context) => MyHomePage(title: 'WhatEat'),
           MyStorePage.id: (context) => MyStorePage(),
           AddStorePage.id: (context) => AddStorePage(),
+          ManageTablePage.id: (context) => ManageTablePage(),
         },
       ),
 
