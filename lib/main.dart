@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:what_eat/screens/AuthPage.dart';
 import 'package:what_eat/UserInformation.dart';
-import 'package:what_eat/screens/DetailPage.dart';
+import 'package:what_eat/screens/MainPage/Sections/DetailPage.dart';
 import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
 import 'package:what_eat/screens/MainPage/MainPage.dart';
 import 'package:what_eat/screens/MyHomePage.dart';

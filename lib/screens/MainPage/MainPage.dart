@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:paginate_firestore/bloc/pagination_listeners.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:what_eat/screens/MainPage/Sections/DetailPage.dart';
 
 final _store = FirebaseFirestore.instance;
 
@@ -19,35 +19,40 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   double curLng, curLat;
-  PaginateRefreshedChangeListener refreshChangeListener =
-      PaginateRefreshedChangeListener();
-
-  ScrollController _scrollController = ScrollController();
+  double distance;
 
   double degreesToRadians(degrees) {
     return degrees * pi / 180.0;
   }
 
-  double distanceInKmBetweenEarthCoordinates(double lat, double lon) {
+  bool isInsideDistanceInKmBetweenEarthCoordinates(double lat, double lon, double distance) {
     var earthRadiusKm = 6371.0;
 
-    var dLat = degreesToRadians(lat - curLat);
-    var dLon = degreesToRadians(lon - curLng);
+    var dLat = degreesToRadians(lat - (curLat ?? 0.0));
+    var dLon = degreesToRadians(lon - (curLng ?? 0.0));
 
     var a = pow(sin(dLat / 2), 2) +
         pow(sin(dLon / 2), 2) *
-            cos(degreesToRadians(curLat)) *
+            cos(degreesToRadians((curLat ?? 0.0))) *
             cos(degreesToRadians(lat));
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return earthRadiusKm * c;
+    return earthRadiusKm * c < distance;
   }
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final lngLat = await Geolocator.getCurrentPosition();
-      curLat = lngLat.latitude.toDouble();
-      curLng = lngLat.longitude.toDouble();
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+      ].request();
+      if (statuses[Permission.location].isGranted) {
+        final lngLat = await Geolocator.getCurrentPosition();
+        curLat = lngLat.latitude.toDouble();
+        curLng = lngLat.longitude.toDouble();
+        setState(() {
+          distance = 3.0;
+        });
+      }
     });
   }
 
@@ -185,7 +190,7 @@ class _MainPageState extends State<MainPage> {
                                 width: 5.0,
                               ),
                               Text(
-                                "3km",
+                                "${distance?.toInt() ?? 3}km",
                                 style: TextStyle(
                                     color: Colors.orangeAccent,
                                     fontSize: 12.0,
@@ -193,6 +198,11 @@ class _MainPageState extends State<MainPage> {
                               ),
                             ],
                           ),
+                          onTap: () {
+                            setState(() {
+                              distance++;
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -241,68 +251,67 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-            RefreshIndicator(
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: PaginateFirestore(
-                  itemBuilderType: PaginateBuilderType.gridView,
-                  itemsPerPage: 10,
-                  scrollController: _scrollController,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (index, context, snapshot) {
-                    final _data = snapshot.data() as Map;
-                    double distance = distanceInKmBetweenEarthCoordinates(
-                        double.tryParse(_data['location']['y']) ?? 35.0,
-                        double.tryParse(_data['location']['x']) ?? 129.0);
-                    print(distance);
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          child: Center(
-                            child: Image.network(
-                              'https:${_data['image'] ?? '//via.placeholder.com/150'}',
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _store.collection('St_temp').snapshots(),
+                builder: (context, snapshot) {
+                  if(!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  final _renderingSnapshots = snapshot.data.docs.where((element) {
+                    final lat = double.tryParse((element.data() as Map)['location']['y']) ?? 0.0;
+                    final lon = double.tryParse((element.data() as Map)['location']['x']) ?? 0.0;
+                    return isInsideDistanceInKmBetweenEarthCoordinates(lat, lon, distance ?? 3.0);
+                  }).toList();
+                  final gridViewList = List.generate(_renderingSnapshots.length, (index) {
+                    final _data = _renderingSnapshots.elementAt(index).data() as Map;
+                    return InkWell(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            child: Center(
+                              child: Image.network(
+                                'https:${_data['image'] ?? '//via.placeholder.com/150'}',
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                            height: 150.0,
+                          ),
+                          Text(
+                            "${_data['title']}".length > 10
+                                ? "${index + 1}. ${"${_data['title']}".substring(0, 7)}..."
+                                : "${index + 1}. ${_data['title']}",
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "${_data['address'].split('구 ')[0]}구",
+                            style: TextStyle(
+                              fontSize: 11.0,
                             ),
                           ),
-                          height: 150.0,
-                        ),
-                        Text(
-                          "${_data['title']}".length > 10
-                              ? "${index + 1}. ${"${_data['title']}".substring(0, 7)}..."
-                              : "${index + 1}. ${_data['title']}",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          "${_data['address'].split('구 ')[0]}구",
-                          style: TextStyle(
-                            fontSize: 11.0,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, DetailPage.id);
+                      }
                     );
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  });
+                  return GridView.count(
+                    shrinkWrap: true,
+                    primary: false,
                     crossAxisCount: 2,
                     crossAxisSpacing: 10.0,
                     childAspectRatio: 0.9,
-                  ),
-                  // orderBy is compulsary to enable pagination
-                  query: _store.collection('St_temp').orderBy('title'),
-                  listeners: [
-                    refreshChangeListener,
-                  ],
-                ),
+                    children: gridViewList,
+                  );
+                },
               ),
-              onRefresh: () async {
-                refreshChangeListener.refreshed = true;
-              },
             )
           ],
         ),
@@ -310,3 +319,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+// double distance = distanceInKmBetweenEarthCoordinates(
+//     double.tryParse(_data['location']['y']) ?? 35.0,
+//     double.tryParse(_data['location']['x']) ?? 129.0);
