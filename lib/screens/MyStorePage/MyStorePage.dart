@@ -24,7 +24,7 @@ class _Store {
   _Store({this.title, this.rate, this.reviews, this.isOpen}) {
     rate = (rate == null? 0 : rate);
     reviews = (reviews == null? 0 : reviews);
-    isOpen = (isOpen == null? false: true);
+    isOpen = (isOpen == null? false : isOpen);
   }
 }
 
@@ -190,26 +190,31 @@ class _MyStorePageState extends State<MyStorePage> {
         ) : 
         Container(
           padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
-          child: TextButton.icon(icon: Icon(Icons.add), label: Text("가게 추가"), onPressed: () async {
-            final result = await Navigator.pushNamed(context, AddStorePage.id);
-            if (result != null) {
-              DocumentReference storeRef = FirebaseFirestore.instance.collection('St_temp').doc(result);
-              userinfo.setStore(storeRef);
-              setState(() {
-                storeRef.get().then((doc) {
-                  Map<String, dynamic> result = doc.data();
-                  store = _Store(
-                    title: result['title'],
-                    rate: result['rate'],
-                    reviews: result['reviews'],
-                    isOpen: result['isOpen']
-                  );
-
-                  if (result['isOpen'] == null)
-                    storeRef.update({'isOpen' : false});
-                });
-              });
-            }
+          child: TextButton.icon(icon: Icon(Icons.add), label: Text("가게 추가"), onPressed: () {
+            Navigator.pushNamed(context, AddStorePage.id).then((result) {
+              if (result != null) {
+                DocumentReference storeRef = FirebaseFirestore.instance.collection('St_temp').doc(result);
+                userinfo.setStore(storeRef);
+                  storeRef.get().then((doc) {
+                    Map<String, dynamic> result = doc.data();
+                    if (result['rate'] == null)
+                      storeRef.update({'rate' : 0.0});
+                    if (result['reviews'] == null)
+                      storeRef.update({'reviews' : 0});
+                    if (result['isOpen'] == null)
+                      storeRef.update({'isOpen' : false});
+                    setState(() {
+                      store = _Store(
+                        title: result['title'],
+                        rate: result['rate'],
+                        reviews: result['reviews'],
+                        isOpen: result['isOpen']
+                      );
+                    });
+                    
+                  });
+              }
+            });
           }),
         )
     );
