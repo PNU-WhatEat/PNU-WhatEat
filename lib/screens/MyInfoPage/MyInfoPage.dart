@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
+import 'package:what_eat/screens/AdminModePage/AdminModePage.dart';
 import 'package:what_eat/screens/MyStorePage/MyStorePage.dart';
 import './Sections/MyMainInfo.dart';
 import './Sections/TimeLine.dart';
@@ -31,7 +32,16 @@ class MyInfoPage extends StatelessWidget {
               Navigator.pushNamed(context, MyStorePage.id);
             }),
             Divider(thickness: 1,),
-            ListElement(icon: Icon(Icons.sync_alt, color: Colors.blue), title: "관리모드 전환"),
+            ListElement(icon: Icon(Icons.sync_alt, color: Colors.blue), title: "관리모드 전환", onTap: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                //barrierColor: Colors.transparent,
+                builder: (context) {
+                  return AdminModePage();
+                },
+              );
+            }),
             Divider(thickness: 1,),
             ListElement(icon: Icon(Icons.exit_to_app, color: Colors.blue), title: "로그아웃", onTap: () async {
               await userinfo.signOut();
