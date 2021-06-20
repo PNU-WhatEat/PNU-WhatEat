@@ -6,7 +6,7 @@ import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/DetailPage.dart';
 import 'package:what_eat/screens/LoginPage/Sections/SignInPage.dart';
 import 'package:what_eat/screens/MainPage.dart';
-import 'package:what_eat/screens/MyHomePage.dart';
+import 'package:what_eat/screens/NavBar.dart';
 import 'package:what_eat/screens/ReservationPage.dart';
 import 'package:what_eat/screens/ReviewPage.dart';
 import 'package:what_eat/screens/MyInfoPage/MyInfoPage.dart';
@@ -14,7 +14,7 @@ import 'package:what_eat/screens/MyInfoPage/Sections/EditInfoPage.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditPage.dart';
 import 'package:what_eat/screens/TimeLinePage/TimeLinePage.dart';
 import 'package:what_eat/screens/LoginPage/LandingPage.dart';
-
+import 'package:what_eat/screens/SearchPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class WhatEat extends StatelessWidget {
         ChangeNotifierProvider<UserInformation>(create: (context) => UserInformation()),
       ],
       child: MaterialApp(
-        initialRoute: AuthPage.id,
+        initialRoute: '/',
         routes: {
           MainPage.id: (context) => MainPage(),
           DetailPage.id: (context) => DetailPage(),
@@ -43,7 +43,8 @@ class WhatEat extends StatelessWidget {
           LandingPage.id: (context) => LandingPage(),
           SignInPage.id: (context) => SignInPage(),
           AuthPage.id: (context) => AuthPage(),
-          '/':(context) => MyHomePage(title: 'WhatEat'),
+          SearchPage.id: (context) => SearchPage(),
+          '/':(context) => NavBar(title: 'WhatEat'), //homepage이용시 사용
         },
       ),
 

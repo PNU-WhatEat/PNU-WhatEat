@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'MainPage.dart';
+import 'package:what_eat/screens/MainPage.dart';
 import 'MyInfoPage/MyInfoPage.dart';
 import 'SearchPage.dart';
 //아이콘을 누르면 이동할 page를 import
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class NavBar extends StatefulWidget {
+  NavBar({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NavBarState createState() => _NavBarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NavBarState extends State<NavBar> {
   final List<Widget> _children = [MainPage(), SearchPage(), SearchPage(), MyInfoPage()];
   // 위에 이동할 page 차례대로 입력
   int _currentIndex = 0;
