@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -16,12 +15,6 @@ class _TableState {
   int currentNumber;
 
   _TableState({this.enabled, this.currentNumber});
-
-  @override
-    String toString() {
-      
-      return '{enabled: $enabled, currentNumber: $currentNumber}';
-    }
 }
 
 class _ManageTablePageState extends State<ManageTablePage> {
@@ -73,8 +66,11 @@ class _ManageTablePageState extends State<ManageTablePage> {
                                 tableStateList[i].currentNumber = int.parse(controllerList[i].text);
                                 if (tableStateList[i].currentNumber != 0)
                                   tableStateList[i].enabled = true;
+                                else
+                                  tableStateList[i].enabled = false;
                                 buttonFunctionList[i] = null;
                               });
+                              FocusScope.of(context).unfocus();
                               List<int> updateList = [];
                               for (int i = 0; i < 12; ++i)
                                 updateList.add(tableStateList[i].currentNumber);

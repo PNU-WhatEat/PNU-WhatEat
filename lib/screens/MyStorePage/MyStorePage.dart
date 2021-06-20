@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/ManageMenuPage.dart';
+import 'package:what_eat/screens/MyStorePage/Sections/ManageStoreInfoPage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/ManageTablePage.dart';
 
 import 'Sections/AddStorePage.dart';
@@ -68,41 +69,84 @@ class _MyStorePageState extends State<MyStorePage> {
                   ]),
                   Text('평점 : ${store.rate.toString()}'),
                   Text('리뷰 수 : ${store.reviews}'),
-                  InkWell(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('테이블 관리'),
-                        Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                      ],
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('테이블 관리'),
+                          Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, ManageTablePage.id);
+                      }
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, ManageTablePage.id);
-                    }
                   ),
-                  InkWell(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('메뉴 관리'),
-                        Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                      ],
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('메뉴 관리'),
+                          Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, ManageMenuPage.id);
+                      }
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, ManageMenuPage.id);
-                    }
                   ),
-                  InkWell(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('리뷰 관리'),
-                        Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                      ],
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('리뷰 관리'),
+                          Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                        ],
+                      ),
+                      onTap: () {
+                        
+                      }
                     ),
-                    onTap: () {
-                      
-                    }
+                  ),
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('기타 정보 관리'),
+                          Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, ManageStoreInfoPage.id).then((_) {
+                          userinfo.info.storeRef.get().then((doc) {
+                            Map<String, dynamic> result = doc.data();
+                            setState(() {
+                              store = _Store(title: result['title'], rate: result['rate'], reviews: result['reviews'], isOpen: result['isOpen']);
+                            });
+                          });
+                        });
+                      }
+                    ),
                   ),
               ],)
             ),
@@ -160,6 +204,9 @@ class _MyStorePageState extends State<MyStorePage> {
                     reviews: result['reviews'],
                     isOpen: result['isOpen']
                   );
+
+                  if (result['isOpen'] == null)
+                    storeRef.update({'isOpen' : false});
                 });
               });
             }

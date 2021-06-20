@@ -10,6 +10,7 @@ import 'package:what_eat/screens/MyHomePage.dart';
 import 'package:what_eat/screens/MyStorePage/MyStorePage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/AddStorePage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/ManageMenuPage.dart';
+import 'package:what_eat/screens/MyStorePage/Sections/ManageStoreInfoPage.dart';
 import 'package:what_eat/screens/MyStorePage/Sections/ManageTablePage.dart';
 import 'package:what_eat/screens/ReservationPage.dart';
 import 'package:what_eat/screens/ReviewPage.dart';
@@ -52,6 +53,7 @@ class WhatEat extends StatelessWidget {
           AddStorePage.id: (context) => AddStorePage(),
           ManageTablePage.id: (context) => ManageTablePage(),
           ManageMenuPage.id: (context) => ManageMenuPage(),
+          ManageStoreInfoPage.id: (context) => ManageStoreInfoPage(),
         },
       ),
 
