@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:what_eat/screens/AdminModePage/AdminModePage.dart';
 import 'package:what_eat/screens/AuthPage.dart';
 import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/DetailPage.dart';
@@ -54,6 +55,7 @@ class WhatEat extends StatelessWidget {
           ManageTablePage.id: (context) => ManageTablePage(),
           ManageMenuPage.id: (context) => ManageMenuPage(),
           ManageStoreInfoPage.id: (context) => ManageStoreInfoPage(),
+          AdminModePage.id: (context) => AdminModePage(),
         },
       ),
 
