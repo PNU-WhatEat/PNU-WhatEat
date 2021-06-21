@@ -6,6 +6,8 @@
     <application
         android:label="what_eat"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDIk4qJqTrBB2fbT-f_x1m33wIM-GJ3q7Y"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
