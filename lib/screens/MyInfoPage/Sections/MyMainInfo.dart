@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 import 'EditInfoPage.dart';
 
-class EditInfoPageArgs {
-  final String name;
-  final String email;
-  final String phoneNumber;
-  final String userid;
-
-  EditInfoPageArgs({this.name, this.email, this.phoneNumber, this.userid});
-}
-
 class MyMainInfo extends StatelessWidget{
   static const id = "myMainInfo_Page";
   final String name;
@@ -64,7 +55,7 @@ class MyMainInfo extends StatelessWidget{
       ),
       OutlinedButton.icon(
         onPressed: () {
-          Navigator.pushNamed(context, EditInfoPage.id, arguments: EditInfoPageArgs(name: this.name, email: this.email, phoneNumber: this.phoneNumber, userid: this.userid));
+          Navigator.pushNamed(context, EditInfoPage.id);
         }, 
         icon: Icon(Icons.edit),
         label: Text("수정"),

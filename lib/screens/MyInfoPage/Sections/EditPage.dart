@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:what_eat/UserInformation.dart';
 import 'package:what_eat/screens/MyInfoPage/Sections/EditInfoPage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditPage extends StatefulWidget {
   static const id = "edit_Page";
@@ -13,7 +12,7 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   TextEditingController controller = TextEditingController();
-  Function isButtonEnable;
+  Function submitButtonPressed;
   
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,9 @@ class _EditPageState extends State<EditPage> {
                         (args.message.compareTo("비밀번호") == 0 ? true : false),
                     onChanged: (text) {
                       if (text.isEmpty)
-                        setState(() => {isButtonEnable = null});
+                        setState(() => {submitButtonPressed = null});
                       else
-                        setState(() => {isButtonEnable = () {
+                        setState(() => {submitButtonPressed = () {
                           if (args.message.compareTo("이름") == 0) {
                             userinfo.setName(controller.text).then((_) {
                               Navigator.pop(context, true);
@@ -59,10 +58,13 @@ class _EditPageState extends State<EditPage> {
                           }
                         }});
                     },
+                    onSubmitted: (text) {
+                      submitButtonPressed();
+                    },
                   ),
                   ElevatedButton(
                     child: Text('확인'),
-                    onPressed: isButtonEnable,
+                    onPressed: submitButtonPressed,
                   ),
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
