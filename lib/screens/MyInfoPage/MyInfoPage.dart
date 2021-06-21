@@ -7,6 +7,9 @@ import './Sections/MyMainInfo.dart';
 import './Sections/TimeLine.dart';
 import './Sections/ListElement.dart';
 
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MyInfoPage extends StatelessWidget {
   static const id = "myInfo_page";
   
@@ -36,7 +39,6 @@ class MyInfoPage extends StatelessWidget {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                //barrierColor: Colors.transparent,
                 builder: (context) {
                   return AdminModePage();
                 },
@@ -47,6 +49,16 @@ class MyInfoPage extends StatelessWidget {
               await userinfo.signOut();
             }),
             Divider(thickness: 1,),
+            IconButton(icon: Icon(Icons.android_rounded), onPressed: () {
+              FirebaseFirestore.instance.collection('User').where('name', isEqualTo: '조병우').get().then((doc) {
+                doc.docs[0]['storeRef'].update({"reservation" : FieldValue.arrayUnion([{
+                  "table" : Random().nextInt(12),
+                  "time" : DateTime.now(),
+                  "userRef" : FirebaseFirestore.instance.collection('User').doc(userinfo.getUser().uid)
+                }])});
+              });
+            }),
+            Container(width: 100),
           ],
         ),
       ),
