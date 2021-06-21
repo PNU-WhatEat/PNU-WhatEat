@@ -65,7 +65,44 @@ class _MyStorePageState extends State<MyStorePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(store.title, style : TextStyle(fontSize: 20, color:store.isOpen ? Colors.blue : Colors.grey)),
-                      Text(store.isOpen ? '영업 중' : '영업 종료', style: TextStyle(color: store.isOpen ? Colors.blue : Colors.red)),
+                      
+                      InkWell(
+                        child: Container(
+                          height : 40,
+                          width : 80,
+                          alignment: Alignment(0, 0),
+                          child: Text(store.isOpen ? '영업 중' : '영업 종료', style: TextStyle(color: store.isOpen ? Colors.blue : Colors.red))
+                        ),
+                        onTap: () {
+                          showDialog(
+                            context: context, 
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Text("가게를 ${store.isOpen ? "종료" : "오픈"} 하시겠습니까?"),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                actions: [
+                                  TextButton(
+                                    child: Text("확인"), 
+                                    onPressed: () {
+                                      userinfo.info.storeRef.update({'isOpen' : !store.isOpen});
+                                      setState(() {
+                                        store.isOpen = !store.isOpen;
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  ),
+                                  TextButton(
+                                    child: Text("취소"), 
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }
+                                  )
+                                ]
+                              );
+                            }
+                          );
+                        }
+                      ),
                   ]),
                   Text('평점 : ${store.rate.toString()}'),
                   Text('리뷰 수 : ${store.reviews}'),
@@ -193,7 +230,7 @@ class _MyStorePageState extends State<MyStorePage> {
           child: TextButton.icon(icon: Icon(Icons.add), label: Text("가게 추가"), onPressed: () {
             Navigator.pushNamed(context, AddStorePage.id).then((result) {
               if (result != null) {
-                DocumentReference storeRef = FirebaseFirestore.instance.collection('St_temp').doc(result);
+                DocumentReference storeRef = FirebaseFirestore.instance.collection('Store').doc(result);
                 userinfo.setStore(storeRef);
                   storeRef.get().then((doc) {
                     Map<String, dynamic> result = doc.data();

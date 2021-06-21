@@ -36,13 +36,51 @@ class MyInfoPage extends StatelessWidget {
             }),
             Divider(thickness: 1,),
             ListElement(icon: Icon(Icons.sync_alt, color: Colors.blue), title: "관리모드 전환", onTap: () {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return AdminModePage();
-                },
-              );
+              userinfo.info.storeRef.get().then((doc) {
+                if (doc.get('isOpen') == true) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AdminModePage();
+                    },
+                  );
+                }
+                else {
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Text("가게가 오픈되어 있지 않습니다.\n오픈하고 관리모드로 들어가시겠습니까?"),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        actions: [
+                          TextButton(
+                            child: Text("확인"), 
+                            onPressed: () {
+                              userinfo.info.storeRef.update({'isOpen' : true});
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AdminModePage();
+                                },
+                              );
+                            }
+                          ),
+                          TextButton(
+                            child: Text("취소"), 
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }
+                          )
+                        ]
+                      );
+                    }
+                  );
+                  
+                }
+              });
             }),
             Divider(thickness: 1,),
             ListElement(icon: Icon(Icons.exit_to_app, color: Colors.blue), title: "로그아웃", onTap: () async {

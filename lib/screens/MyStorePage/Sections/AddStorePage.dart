@@ -75,7 +75,7 @@ class _AddStorePageState extends State<AddStorePage> {
   }
 
   void searchPressed() {
-    FirebaseFirestore.instance.collection('St_temp').where('title', isGreaterThanOrEqualTo: controller.text, isLessThan: controller.text + '\uf8ff').get().then((results) {
+    FirebaseFirestore.instance.collection('Store').where('title', isGreaterThanOrEqualTo: controller.text, isLessThan: controller.text + '\uf8ff').get().then((results) {
       setState(() {
         storeList = [];
         for (var result in results.docs)
