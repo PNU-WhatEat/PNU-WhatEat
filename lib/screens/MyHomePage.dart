@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'MainPage.dart';
+import 'MainPage/MainPage.dart';
 import 'MyInfoPage/MyInfoPage.dart';
 import 'SearchPage.dart';
 //아이콘을 누르면 이동할 page를 import
