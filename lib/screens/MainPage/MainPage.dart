@@ -1,14 +1,19 @@
+import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:what_eat/screens/MainPage/Sections/DetailPage.dart';
+import 'package:http/http.dart' as http;
 
 final _store = FirebaseFirestore.instance;
+final _storage = FirebaseStorage.instance;
 
 class MainPage extends StatefulWidget {
   static const id = 'main_page';
@@ -85,28 +90,16 @@ class _MainPageState extends State<MainPage> {
                     fontSize: 8.0,
                   ),
                 ),
-                InkWell(
-                  child: Row(
-                    children: [
-                      Text(
-                        "부산 연제구",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 10.0,
-                        color: Colors.black54,
-                      )
-                    ],
-                  ),
-                  onTap: () {
-                    showBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                        );
-                      },
+                FutureBuilder<http.Response>(
+                  future: http.get(Uri.parse(
+                      'https://maps.googleapis.com/maps/api/geocode/json?language=KO&latlng=$curLat,$curLng&key=AIzaSyDIk4qJqTrBB2fbT-f_x1m33wIM-GJ3q7Y')),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Text(
+                      "부산 ${json.decode(snapshot.data.body)['results'][0]['formatted_address'].split(' ')[2]}",
+                      style: TextStyle(color: Colors.black),
                     );
                   },
                 )
@@ -194,55 +187,46 @@ class _MainPageState extends State<MainPage> {
                               Text(
                                 "${distance?.toInt() ?? 3}km",
                                 style: TextStyle(
-                                    color: Colors.orangeAccent,
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w300),
+                                  color: Colors.orangeAccent,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ],
                           ),
-                          onTap: () {
+                          onTap: () async {
+                            int temp = 0;
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('추적할 거리를 입력하세요.'),
+                                  content: TextField(
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (val) {
+                                      temp = int.tryParse(val) ?? 0;
+                                    },
+                                    decoration: InputDecoration(
+                                        labelText: "거리",
+                                        filled: true,
+                                        fillColor: Colors.grey.shade50),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: Text("확인"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                             setState(() {
-                              distance++;
+                              distance =
+                                  double.tryParse(temp.toString()) ?? 0.0;
                             });
                           },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Container(
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            15.0,
-                          ),
-                          border: Border.all(
-                            color: Colors.black54,
-                          )),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 2.0),
-                        child: InkWell(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.adjust,
-                                color: Colors.black54,
-                                size: 12.0,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "필터",
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
                     ),
@@ -283,16 +267,48 @@ class _MainPageState extends State<MainPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              child: Center(
-                                child: Image.network(
-                                  'https:${_data['image'] ?? '//via.placeholder.com/150'}',
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.center,
-                                ),
-                              ),
-                              height: 150.0,
-                            ),
+                            _data['image'] != null
+                                ? SizedBox(
+                                    height: 150.0,
+                                    child: Center(
+                                      child: Image.network(
+                                        'https:${_data['image'] ?? '//via.placeholder.com/150'}',
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.center,
+                                      ),
+                                    ),
+                                  )
+                                : _data['previewImagePaths'] != null &&
+                                        _data['previewImagePaths'].length != 0
+                                    ? FutureBuilder(
+                                        future: _storage
+                                            .ref(_data['previewImagePaths'][0])
+                                            .getDownloadURL(),
+                                        builder: (context, snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                          return SizedBox(
+                                            height: 150.0,
+                                            child: Center(
+                                              child: Image.network(
+                                                snapshot.data,
+                                                fit: BoxFit.cover,
+                                                alignment: Alignment.center,
+                                              ),
+                                            ),
+                                          );
+                                        })
+                                    : Center(
+                                        child: Image.network(
+                                          'https://via.placeholder.com/150',
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                        ),
+                                      ),
                             Text(
                               "${_data['title']}".length > 10
                                   ? "${index + 1}. ${"${_data['title']}".substring(0, 7)}..."
@@ -332,6 +348,3 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-// double distance = distanceInKmBetweenEarthCoordinates(
-//     double.tryParse(_data['location']['y']) ?? 35.0,
-//     double.tryParse(_data['location']['x']) ?? 129.0);
