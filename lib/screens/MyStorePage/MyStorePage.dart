@@ -203,6 +203,14 @@ class _MyStorePageState extends State<MyStorePage> {
                       storeRef.update({'reviews' : 0});
                     if (result['isOpen'] == null)
                       storeRef.update({'isOpen' : false});
+                    if (result['table'] == null)
+                      storeRef.update({'table' : List.generate(12, (index) => 0)});
+                    if (result['occupied'] == null)
+                      storeRef.update({'occupied' : List.generate(12, (index) => 0)});
+                    if (result['reservation'] == null)
+                      storeRef.update({'reservation' : []});
+
+
                     setState(() {
                       store = _Store(
                         title: result['title'],
@@ -211,7 +219,6 @@ class _MyStorePageState extends State<MyStorePage> {
                         isOpen: result['isOpen']
                       );
                     });
-                    
                   });
               }
             });
