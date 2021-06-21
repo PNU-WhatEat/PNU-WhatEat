@@ -49,6 +49,7 @@ class MyInfoPage extends StatelessWidget {
               await userinfo.signOut();
             }),
             Divider(thickness: 1,),
+            // TODO: remove below codes when publishing
             IconButton(icon: Icon(Icons.android_rounded), onPressed: () {
               FirebaseFirestore.instance.collection('User').where('name', isEqualTo: '조병우').get().then((doc) {
                 doc.docs[0]['storeRef'].update({"reservation" : FieldValue.arrayUnion([{

@@ -23,6 +23,8 @@ class _ReservationInfoState extends State<ReservationInfo> {
   UserInformation userinfo;
   Stream storeStream;
   int currentPage = 0;
+  List occupied;
+  int prv;
   _Reservation _reservation = _Reservation();
   final alertPlayer = AudioCache();
 
@@ -38,6 +40,7 @@ class _ReservationInfoState extends State<ReservationInfo> {
     _reservation.table = asyncSnapshot.data['reservation'][0]['table'];
     _reservation.time = asyncSnapshot.data['reservation'][0]['time'].toDate();
     _reservation.enable = asyncSnapshot.data['table'][_reservation.table] != asyncSnapshot.data['occupied'][_reservation.table];
+    occupied = asyncSnapshot.data['occupied'];
     return Container(
       height: 150,
       child: Column(
@@ -52,13 +55,17 @@ class _ReservationInfoState extends State<ReservationInfo> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(
-                onPressed: _reservation.enable ? () { } : null, 
+                onPressed: _reservation.enable ? () { 
+                  ++occupied[_reservation.table];
+                  userinfo.info.storeRef.update({"occupied" : occupied});
+                  userinfo.info.storeRef.update({"reservation" : FieldValue.arrayRemove([asyncSnapshot.data['reservation'][0]])}); 
+                } : null, 
                 child: Text('수락', style: TextStyle(color: _reservation.enable ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold),)
               ),
               TextButton(
                 onPressed: () {
                   userinfo.info.storeRef.update({"reservation" : FieldValue.arrayRemove([asyncSnapshot.data['reservation'][0]])}); 
-                }, 
+                },
                 child: Text('거절', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))
               ),
           ],)
@@ -67,10 +74,11 @@ class _ReservationInfoState extends State<ReservationInfo> {
     );
   }
 
-  renderEmpty() {
+  renderEmpty(String text) {
     return Container(
       height: 300,
       width : 300, 
+      padding: EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: [
           Row(
@@ -81,8 +89,8 @@ class _ReservationInfoState extends State<ReservationInfo> {
             ],
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(30, 60, 30, 30),
-            child: Text('예약 정보가 없습니다.', style: TextStyle(color: Colors.red))
+            padding: EdgeInsets.fromLTRB(30, 100, 30, 30),
+            child: Text(text, style: TextStyle(color: Colors.red))
           )
         ],
       )
@@ -102,23 +110,29 @@ class _ReservationInfoState extends State<ReservationInfo> {
             case ConnectionState.waiting : return Text('Waiting Data...'); break;
             case ConnectionState.active:
             case ConnectionState.done:
-              alertPlayer.play('alert.mp3');
+              if (prv != asyncSnapshot.data['reservation'].length) {
+                alertPlayer.play('alert.mp3');
+                prv = asyncSnapshot.data['reservation'].length; 
+              }
               if (currentPage == 0 && asyncSnapshot.data['reservation'].length != 0)
                   currentPage = 1;  
               else if (currentPage > asyncSnapshot.data['reservation'].length)
                   currentPage = asyncSnapshot.data['reservation'].length;
+              
+              
               return currentPage == 0 ? 
-                renderEmpty()
+                renderEmpty("아직 예약이 들어오지 않았습니다.")
                 :  
                 FutureBuilder<Object>(
                   future: asyncSnapshot.data['reservation'][0]['userRef'].get(),
                   builder: (context, futureSnapshot) {
                     if (!futureSnapshot.hasData)
-                      return renderEmpty();
+                      return renderEmpty("");
                     else
                       return Container(
                         height: 300,
                         width : 300, 
+                        padding: EdgeInsets.symmetric(vertical: 30),
                         child: Column(
                           children: [
                             Row(
@@ -129,7 +143,7 @@ class _ReservationInfoState extends State<ReservationInfo> {
                               ],
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 60, 30, 30),
+                              padding: EdgeInsets.fromLTRB(30, 60, 30, 10),
                               child: renderCard(asyncSnapshot, futureSnapshot),
                             )
                           ],
