@@ -25,7 +25,8 @@ class _MainPageState extends State<MainPage> {
     return degrees * pi / 180.0;
   }
 
-  bool isInsideDistanceInKmBetweenEarthCoordinates(double lat, double lon, double distance) {
+  bool isInsideDistanceInKmBetweenEarthCoordinates(
+      double lat, double lon, double distance) {
     var earthRadiusKm = 6371.0;
 
     var dLat = degreesToRadians(lat - (curLat ?? 0.0));
@@ -49,6 +50,7 @@ class _MainPageState extends State<MainPage> {
         final lngLat = await Geolocator.getCurrentPosition();
         curLat = lngLat.latitude.toDouble();
         curLng = lngLat.longitude.toDouble();
+        print(curLat);
         setState(() {
           distance = 3.0;
         });
@@ -256,51 +258,62 @@ class _MainPageState extends State<MainPage> {
               child: StreamBuilder<QuerySnapshot>(
                 stream: _store.collection('St_temp').snapshots(),
                 builder: (context, snapshot) {
-                  if(!snapshot.hasData) {
+                  if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
                   }
-                  final _renderingSnapshots = snapshot.data.docs.where((element) {
-                    final lat = double.tryParse((element.data() as Map)['location']['y']) ?? 0.0;
-                    final lon = double.tryParse((element.data() as Map)['location']['x']) ?? 0.0;
-                    return isInsideDistanceInKmBetweenEarthCoordinates(lat, lon, distance ?? 3.0);
+                  final _renderingSnapshots =
+                      snapshot.data.docs.where((element) {
+                    final lat = double.tryParse(
+                            (element.data() as Map)['location']['y']) ??
+                        0.0;
+                    final lon = double.tryParse(
+                            (element.data() as Map)['location']['x']) ??
+                        0.0;
+                    return isInsideDistanceInKmBetweenEarthCoordinates(
+                      lat,
+                      lon,
+                      distance ?? 3.0,
+                    );
                   }).toList();
-                  final gridViewList = List.generate(_renderingSnapshots.length, (index) {
-                    final _data = _renderingSnapshots.elementAt(index).data() as Map;
+                  final gridViewList =
+                      List.generate(_renderingSnapshots.length, (index) {
+                    final _data =
+                        _renderingSnapshots.elementAt(index).data() as Map;
                     return InkWell(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            child: Center(
-                              child: Image.network(
-                                'https:${_data['image'] ?? '//via.placeholder.com/150'}',
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              child: Center(
+                                child: Image.network(
+                                  'https:${_data['image'] ?? '//via.placeholder.com/150'}',
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              height: 150.0,
+                            ),
+                            Text(
+                              "${_data['title']}".length > 10
+                                  ? "${index + 1}. ${"${_data['title']}".substring(0, 7)}..."
+                                  : "${index + 1}. ${_data['title']}",
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "${_data['address'].split('구 ')[0]}구",
+                              style: TextStyle(
+                                fontSize: 11.0,
                               ),
                             ),
-                            height: 150.0,
-                          ),
-                          Text(
-                            "${_data['title']}".length > 10
-                                ? "${index + 1}. ${"${_data['title']}".substring(0, 7)}..."
-                                : "${index + 1}. ${_data['title']}",
-                            style: TextStyle(
-                              fontSize: 15.0,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "${_data['address'].split('구 ')[0]}구",
-                            style: TextStyle(
-                              fontSize: 11.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, DetailPage.id);
-                      }
-                    );
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, DetailPage.id,
+                              arguments: _data);
+                        });
                   });
                   return GridView.count(
                     shrinkWrap: true,
